@@ -33,6 +33,14 @@ export const userSchema: Schema = new Schema(
       type: String,
       default: UserRole.customer,
     },
+    todoList: [
+    {    
+      type: Schema.Types.ObjectId,
+      ref: 'List' 
+    }],
+    gmail_account_id : {
+      type: String
+    },
     tmp_forgot_pass_code: {
       type: Number,
     },

@@ -31,7 +31,7 @@ export class UserLib {
   }
 
   public async getUserById(id: string): Promise<IUser> {
-    return userModel.findById(id);
+    return userModel.findOne({_id: id}).populate('todoList', '_id name');
   }
 
   public async saveUser(userData: IUser): Promise<IUser> {
@@ -44,6 +44,26 @@ export class UserLib {
   public async getUserByEmail(email: string): Promise<IUser> {
     return userModel.findOne({ email: email }, '+password');
   }
+
+  public async gmailSignInSignUp(email: string, gmail_account_id: string, first_name: string, last_name: string): Promise<any> {
+    let user: IUser = await this.getUserByEmail(email);
+    let token: string;
+    let SECRET: string = process.env.SECRET;
+    if (user) {
+      user.password = undefined;
+      token = jwt.sign({ id: user._id, userRole: user.userRole, jti: 'test' }, SECRET, {
+          expiresIn: '24h',
+      });
+      return { user, token };
+    } else {
+      const userObj: IUser = new userModel({email, gmail_account_id, first_name, last_name});
+      let user: any = await userObj.save();
+      token = jwt.sign({ id: user._id, userRole: user.userRole, jti: 'test' }, SECRET, {
+        expiresIn: '24h',
+      });
+      return { user, token };
+    }
+  } 
 
   /**
    * updateUser

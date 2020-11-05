@@ -38,7 +38,7 @@ export const userRules: any = {
       .withMessage('Please enter confirm password')
       .custom(
         (value: string, options: { req: Request }) =>
-          value === options.req.body.password,
+          value === options.req.body.password
       )
       .withMessage('Password and Confirm password are not same.'),
 

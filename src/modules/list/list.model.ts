@@ -1,4 +1,4 @@
-import { Document, model, PaginateModel, Schema } from 'mongoose';
+import { Document, model, PaginateModel, Schema, Types } from 'mongoose';
 import * as mongoosePaginate from 'mongoose-paginate';
 import { IList } from './list.type';
 
@@ -7,6 +7,11 @@ export const listSchema: Schema = new Schema(
     name: {
       type: String,
       required: true,
+    },
+    user_id: {
+      type: Types.ObjectId,
+      required: true,
+      ref: 'User',
     }
   },
   {

@@ -2,10 +2,19 @@ import * as bodyParser from 'body-parser';
 import * as express from 'express';
 import * as http from 'http';
 import * as mongoose from 'mongoose';
+import * as swaggerUi from 'swagger-ui-express';
+import * as yaml from 'yamljs';
 
 import { registerRoutes } from './src/routes';
 
+const swagOptions: any = { explorer: false };
+const swaggerDocument: any = yaml.load('./swagger/swagger.yaml');
 
+if (process.env.NODE_ENV === 'production') {
+  swaggerDocument.host = '';
+} else {
+  swaggerDocument.host = `localhost:${process.env.PORT}`;
+}
 
 export class App { 
   public express: express.Application;
@@ -24,6 +33,11 @@ export class App {
     // cors
     this.express.use(bodyParser.json());
     this.express.use(bodyParser.urlencoded({ extended: true }));
+    this.express.use(
+      '/docs',
+      swaggerUi.serve,
+      swaggerUi.setup(swaggerDocument, swagOptions),
+    );
   }
 
 

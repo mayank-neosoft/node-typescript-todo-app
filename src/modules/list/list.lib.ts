@@ -1,6 +1,7 @@
 import { PaginateResult, Types } from 'mongoose';
 import { listModel } from './list.model';
 import { IList, IListRequest } from './list.type';
+import { userModel } from '../user/user.model';
 /**
  * ListLib
  *
@@ -18,9 +19,16 @@ export class ListLib {
     return listModel.findById(id);
   }
 
-  public async saveList(listData: IList): Promise<IList> {
-    const listObj: IList = new listModel(listData);
+  public async saveList(name: string,user_id: string): Promise<IList> {
+    const listObj: IList = new listModel({name, user_id});
     return listObj.save();
+  }
+
+  public async pushListIdInUser(user_id: string, list_id: string): Promise<any> {
+    return userModel.findOneAndUpdate(
+      { _id: user_id },
+      { $push: { todoList: list_id } },
+    )
   }
 
   /**

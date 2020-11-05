@@ -1,0 +1,344 @@
+swagger: '2.0'
+info:
+  description: Todo app in node with typescript
+  title: todo-app
+  version: v1
+host: 'localhost:5000'
+basePath: /api
+schemes:
+- http
+- https
+consumes:
+- application/json
+produces:
+- application/json
+paths:
+  /list/add-list:
+    post:
+      description: 'Add new todo list'
+      summary: saveList
+      parameters:
+      - name: Body
+        in: body
+        required: true
+        description: ''
+        schema:
+          $ref: '#/definitions/AddlistRequest' 
+      responses:
+        200: 
+          description: '' 
+          schema:
+            $ref: '#/definitions/AddlistResponse'
+          examples:
+            application/json; charset=utf-8:
+              success: true
+              data:
+                _id: 5f7b173b2823a845384cd497
+                name: first to list
+                createdAt: 2020-10-05T12:53:15.557Z
+                updatedAt: 2020-10-05T12:53:15.557Z
+                __v: 0
+                message: Success  
+  /list/{id}:
+    get:
+      description: 'Get particular list info'
+      summary: getListById
+      parameters:
+      - name: id
+        in: path
+        required: true
+        type: string
+        description: ''
+      responses:
+        200: 
+          description: '' 
+          examples:
+            application/json; charset=utf-8:
+              success: true
+              data:
+                _id: 5f7b173b2823a845384cd497
+                name: first to list
+                createdAt: 2020-10-05T12:53:15.557Z
+                updatedAt: 2020-10-05T12:53:15.557Z
+                __v: 0
+                message: Success
+    put:
+      description: 'Update list info'
+      summary: updateList
+      parameters:
+      - name: id
+        in: path
+        required: true
+        type: string
+        description: ''
+      - name: Body
+        in: body
+        required: true
+        description: ''
+        schema:
+          $ref: '#/definitions/UpdatelistRequest'
+      responses:
+        200: 
+          description: '' 
+          examples:
+            application/json; charset=utf-8:
+              success: true
+              data:
+                _id: 5f7b173b2823a845384cd497
+                name: first to list
+                createdAt: 2020-10-05T12:53:15.557Z
+                updatedAt: 2020-10-05T12:53:15.557Z
+                __v: 0
+                message: Success  
+  /auth/login:
+    post:
+      description: Login with email and password.
+      summary: login
+      tags:
+      - auth
+      operationId: AuthLoginPost
+      deprecated: false
+      produces:
+      - application/json; charset=utf-8
+      parameters:
+      - name: Body
+        in: body
+        required: true
+        description: ''
+        schema:
+          $ref: '#/definitions/loginrequest'
+      - name: Content-Type
+        in: header
+        required: false
+        type: string
+        description: ''
+      responses:
+        200:
+          description: ''
+          schema:
+            $ref: '#/definitions/login'
+          examples:
+            application/json; charset=utf-8:
+              success: true
+              data:
+                user:
+                  userRole: admin
+                  _id: 5d3eeb3c2384026edfe7aeff
+                  email: mayanksharma@yopmail.com
+                  first_name: mayank
+                  gender: Male
+                  createdAt: 2019-07-29T12:49:00.063Z
+                  updatedAt: 2019-08-08T04:51:08.314Z
+                  __v: 0
+                  last_name: J
+                  tmp_forgot_pass_code: c0eb0420fb6f09972c913df7dcd40853
+                token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVkM2VlYjNjMjM4NDAyNmVkZmU3YWVmZiIsInVzZXJSb2xlIjoiYWRtaW4iLCJpYXQiOjE1NjUyNDA1NTUsImV4cCI6MTU2NTMyNjk1NX0.j0OwWvrWyrkIHgqlLhpIV_ch3S9fZvXb26Rvchg0phQ
+              message: Success
+          headers:
+            X-Powered-By:
+              type: string
+              default: Express
+            Access-Control-Allow-Origin:
+              type: string
+              default: '*'
+            X-Content-Type-Options:
+              type: string
+              default: nosniff
+            Content-Length:
+              type: string
+              default: 539
+            ETag:
+              type: string
+              default: W/"21b-qAQzHYrS9NmIyHhcL9DyOenLTY8"
+            Date:
+              type: string
+              default: Thu, 08 Aug 2019 05:02:34 GMT
+            Connection:
+              type: string
+              default: keep-alive     
+definitions:
+      loginrequest:
+        title: loginrequest
+        example:
+          email: mayanksharma@yopmail.com
+          password: mayankfd34
+        type: object
+        properties:
+          email:
+            type: string
+          password:
+            type: string
+        required:
+        - email
+        - password
+      login:
+        title: login
+        example:
+          success: true
+          data:
+            user:
+              userRole: admin
+              _id: 5d3eeb3c2384026edfe7aeff
+              email: mayanksharma@yopmail.com
+              first_name: Mayank
+              gender: Male
+              createdAt: 2019-07-29T12:49:00.063Z
+              updatedAt: 2019-08-08T04:51:08.314Z
+              __v: 0
+              last_name: J
+              tmp_forgot_pass_code: c0eb0420fb6f09972c913df7dcd40853
+            token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVkM2VlYjNjMjM4NDAyNmVkZmU3YWVmZiIsInVzZXJSb2xlIjoiYWRtaW4iLCJpYXQiOjE1NjUyNDA1NTUsImV4cCI6MTU2NTMyNjk1NX0.j0OwWvrWyrkIHgqlLhpIV_ch3S9fZvXb26Rvchg0phQ
+          message: Success
+        type: object
+        properties:
+          success:
+            type: boolean
+          data:
+            $ref: '#/definitions/Data13'
+          message:
+            type: string
+        required:
+        - success
+        - data
+        - message
+      Data13:
+        title: Data13
+        example:
+          user:
+            userRole: admin
+            _id: 5d3eeb3c2384026edfe7aeff
+            email: mayanksharma@yopmail.com
+            first_name: Mayank
+            gender: Male
+            createdAt: 2019-07-29T12:49:00.063Z
+            updatedAt: 2019-08-08T04:51:08.314Z
+            __v: 0
+            last_name: J
+            tmp_forgot_pass_code: c0eb0420fb6f09972c913df7dcd40853
+          token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVkM2VlYjNjMjM4NDAyNmVkZmU3YWVmZiIsInVzZXJSb2xlIjoiYWRtaW4iLCJpYXQiOjE1NjUyNDA1NTUsImV4cCI6MTU2NTMyNjk1NX0.j0OwWvrWyrkIHgqlLhpIV_ch3S9fZvXb26Rvchg0phQ
+        type: object
+        properties:
+        user:
+          $ref: '#/definitions/User'
+        token:
+          type: string
+        required:
+        - user
+        - token
+      User:
+        title: User
+        example:
+          userRole: admin
+          _id: 5d3eeb3c2384026edfe7aeff
+          email: mayanksharma@yopmail.com
+          first_name: Mayank
+          gender: Male
+          createdAt: 2019-07-29T12:49:00.063Z
+          updatedAt: 2019-08-08T04:51:08.314Z
+          __v: 0
+          last_name: J
+          tmp_forgot_pass_code: c0eb0420fb6f09972c913df7dcd40853
+        type: object
+        properties:
+          userRole:
+            type: string
+          _id:
+            type: string
+          email:
+            type: string
+          first_name:
+            type: string
+          gender:
+            type: string
+          createdAt:
+            type: string
+          updatedAt:
+            type: string
+          __v:
+            type: integer
+            format: int32
+          last_name:
+            type: string
+          tmp_forgot_pass_code:
+            type: string
+        required:
+        - userRole
+        - _id
+        - email
+        - first_name
+        - gender
+        - createdAt
+        - updatedAt
+        - __v
+        - last_name
+        - tmp_forgot_pass_code
+      UpdatelistRequest:
+        title: UpdatelistRequest
+        example:
+          name: updated list text
+        type: object
+        properties:
+          name:
+            type: string
+        required:
+        - name   
+      AddlistRequest:
+        title: AddlistRequest
+        example:
+          name: new list of data
+        type: object
+        properties:
+          name:
+            type: string
+        required:
+        - name                      
+      AddlistResponse:
+        title: AddlistResponse
+        example:
+          success: true
+          data:
+            _id: 5f7d68591734292964fe8629
+            name: complete updated one
+            createdAt: 2020-10-07T07:03:53.265Z
+            updatedAt: 2020-10-07T07:03:53.265Z
+            __v: 0
+          message: Success
+        type: object
+        properties:
+          success:
+            type: boolean
+          data:
+            $ref: '#/definitions/Data1'
+          message:
+            type: string
+          required:
+            - success
+            - data
+            - message
+      Data1:
+        title: Data1
+        example:
+          _id: 5d224662ca5bec29abdf23ec
+          name: todo list
+          createdAt: 2019-07-07T19:22:10.975Z
+          updatedAt: 2019-07-28T09:15:33.173Z
+          __v: 0
+        type: object
+        properties:
+          _id:
+            type: string
+          name:
+            type: string
+          createdAt:
+            type: string
+          updatedAt:
+            type: string
+          __v:
+            type: integer
+            format: int32
+        required:
+          - _id
+          - name
+          - createdAt
+          - updatedAt
+          - __v

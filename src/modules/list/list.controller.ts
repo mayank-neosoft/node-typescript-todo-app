@@ -1,9 +1,7 @@
 import { Application, Request, Response } from 'express';
 import { Types } from 'mongoose';
 import { BaseController } from '../BaseController';
-import {
-  ResponseHandler
-} from './../../helpers';
+import { AuthHelper, ResponseHandler } from '../../helpers';
 
 import { ListLib } from './list.lib';
 import { IList } from './list.type';
@@ -20,16 +18,19 @@ export class ListController extends BaseController {
     }
 
     public init(): void {
-        this.router.post('/add-list', this.saveList);
-        this.router.put('/:id', this.updateList);
-        this.router.get('/:id', this.getListById);
+        const authHelper: AuthHelper = new AuthHelper();
+
+        this.router.post('/add-list', authHelper.guard, this.saveList);
+        this.router.put('/:id', authHelper.guard, this.updateList);
+        this.router.get('/:id', authHelper.guard, this.getListById);
       } 
       
     public async saveList(req: Request, res: Response): Promise<void> {
         try {
           const list: ListLib = new ListLib();
           const listData: IList = req.body;
-          const listResult: IList = await list.saveList(listData);
+          const listResult: IList = await list.saveList(req.body.name, req.body.loggedinUserId);
+          const userResult: any = await list.pushListIdInUser(req.body.loggedinUserId, listResult._id);
           res.locals.data = listResult;
           ResponseHandler.JSONSUCCESS(req, res);
         } catch (err) {
